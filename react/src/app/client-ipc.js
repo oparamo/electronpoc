@@ -1,12 +1,16 @@
+import {v4} from 'uuid';
+
 // Init
 async function init() {
-  const socketName = await window.getServerSocket()
+  if (!window.getServerSocket) {
+    return;
+  }
+
+  const socketName = await window.getServerSocket();
   connectSocket(socketName, () => {
     console.log('Connected!');
-  })
+  });
 }
-
-init();
 
 // State
 const replyHandlers = new Map()
@@ -66,7 +70,7 @@ function connectSocket(name, onOpen) {
 
 function send(name, args) {
   return new Promise((resolve, reject) => {
-    let id = window.uuid.v4()
+    let id = v4()
     replyHandlers.set(id, { resolve, reject })
     if (socketClient) {
       socketClient.emit('message', JSON.stringify({ id, name, args }))
@@ -92,4 +96,4 @@ function unlisten(name) {
   listeners.set(name, [])
 }
 
-window.send = send;
+export default { init, send };

@@ -1,12 +1,12 @@
 // Init
 async function init() {
   const socketName = await window.getServerSocket()
-  return connectSocket(socketName, () => {
+  connectSocket(socketName, () => {
     console.log('Connected!');
-
-    return Promise.resolve();
   })
 }
+
+init();
 
 // State
 const replyHandlers = new Map()
@@ -92,5 +92,4 @@ function unlisten(name) {
   listeners.set(name, [])
 }
 
-export default { init, send, listen, unlisten };
-export { init, send, listen, unlisten };
+window.send = send;

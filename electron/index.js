@@ -17,13 +17,14 @@ function createWindow(socketName) {
       preload: __dirname + '/client-preload.js'
     }
   })
-
-  console.log(path.join(__dirname, '/../react/build/index.html'))
+  
   const startUrl = process.env.ELECTRON_START_URL || url.format({
     pathname: path.join(__dirname, '/../react/build/index.html'),
     protocol: 'file:',
     slashes: true
   });
+
+  console.log(startUrl)
 
   clientWin.loadURL(startUrl);
 

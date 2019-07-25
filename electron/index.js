@@ -17,16 +17,13 @@ function createWindow(socketName) {
       preload: __dirname + '/client-preload.js'
     }
   })
-  
-  const startUrl = process.env.ELECTRON_START_URL || url.format({
-    pathname: path.join(__dirname, '/../react/build/index.html'),
-    protocol: 'file:',
-    slashes: true
-  });
 
-  console.log(startUrl)
-
-  clientWin.loadURL(startUrl);
+  const startUrl = process.env.ELECTRON_START_URL;
+  if (startUrl) {
+    clientWin.loadURL(startUrl);
+  } else {
+    clientWin.loadFile(`${__dirname}/build/index.html`);
+  }
 
   clientWin.webContents.on('did-finish-load', () => {
     clientWin.webContents.send('set-socket', { name: socketName });
